@@ -1,0 +1,10 @@
+[] make him interact with platforms can stand on them too 
+[] add the pipes make him appear to enter them reset screen and enter pipe
+[] add coins and a counter for them 
+[X] make him be jump forward for some distance when jump and forward keys are pressed                
+[] make an element where if he touches it he dies this'll be the basis of all enemies 
+[] make animated hero and enemies and map with spreadsheets 
+
+
+todo later styling characters and animations, perfecting sizes and hitboxes for player and enemies 
+//double jump, stairs, castle, flag, level ending 
