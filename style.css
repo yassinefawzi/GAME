@@ -1,57 +1,245 @@
 body {
-    margin: 0;
-    padding: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #000000;
-    overflow: hidden;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #000000;
+  overflow: hidden;
+  font-family: 'Arial', sans-serif;
 }
 
 .game-container {
-    width: 800px;
-    height: 400px;
-    position: relative;
-    overflow: hidden;
-    background-color: #3cc2daec;
+  width: 800px;
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+  background-color: #3cc2daec;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
-.playable-area {
-    width: 1600px;
-    height: 100%;
-    background-color: #1d1d1d;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-}
-
+/* Player - Visual sprite remains at 230x154 while collision box is 32x32 */
 .player {
-    width: 32px;
-    height: 32px;
-    background-color: #b82121;
-    position: absolute;
-    bottom: 0;
-    left: 50px;
-    top: 30px;
-    z-index: 2;
-    transition: transform 0.05s linear;
+  width: 230px;
+  height: 154px;
+  position: absolute;
+  z-index: 2;
+  transform-origin: center bottom;
+  background: no-repeat;
+  image-rendering: pixelated;
 }
 
+/* Platform */
 .platform {
-    width: 100px;
-    height: 20px;
-    background-color: #5e5e5e;
-    position: absolute;
-    z-index: 2;
+  width: 100px;
+  height: 20px;
+  background-color: #5e5e5e;
+  position: absolute;
+  z-index: 1;
+  border-radius: 5px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Scoreboard */
+.scoreboard {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
 }
 
 .score {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    color: white;
-    font-size: 20px;
-    z-index: 3;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.fps-counter {
+  color: lime;
+  font-size: 14px;
+}
+
+/* Pause Menu */
+.pause-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu-content {
+  background-color: #333;
+  border: 2px solid #fff;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.menu-content h2 {
+  color: #fff;
+  margin-top: 0;
+}
+
+.menu-content button {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+.menu-content button:hover {
+  background-color: #357abd;
+}
+
+/* Player Animation States */
+/* Using your original sprite sheet metrics */
+.player.idle1 {
+  background-image: url('idle1.png');
+  background-size: 5072px 154px;
+  animation: idle1 1s steps(21) infinite;
+}
+
+.player.idle2 {
+  background-image: url('idle2.png');
+  background-size: 4611px 154px;
+  animation: idle2 2s steps(19) infinite;
+}
+
+.player.run {
+  background-image: url('run.png');
+  background-size: 2997px 154px;
+  animation: run 0.8s steps(12) infinite;
+}
+
+.player.jump {
+  background-image: url('jump.png');
+  background-size: 2536px 154px;
+  animation: jump 0.5s steps(10) forwards;
+}
+
+.player.fall {
+  background-image: url('fall.png');
+  background-size: 2536px 154px;
+  animation: fall 0.5s steps(10) forwards;
+}
+
+.player.ko {
+  background-image: url('ko.png');
+  background-size: 7147px 154px;
+  animation: ko 1s steps(30) infinite;
+}
+
+.player.dizzy {
+  background-image: url('dizzy.png');
+  background-size: 4839px 154px;
+  animation: dizzy 1s steps(20) infinite;
+}
+
+.player.hit {
+  background-image: url('hit.png');
+  background-size: 2536px 154px;
+  animation: hit 1s steps(10) infinite;
+}
+
+.player.attack1 {
+  background-image: url('attack1.png');
+  background-size: 3689px 154px;
+  animation: attack1 1s steps(15) infinite;
+}
+
+.player.attack2 {
+  background-image: url('attack2.png');
+  background-size: 3689px 154px;
+  animation: attack2 1s steps(15) infinite;
+}
+
+.player.attack3 {
+  background-image: url('attack3.png');
+  background-size: 4839px 154px;
+  animation: attack3 1s steps(20) infinite;
+}
+
+/* Animation Keyframes */
+@keyframes idle1 {
+  100% {
+    background-position: -4842px 0;
+  }
+}
+
+@keyframes idle2 {
+  100% {
+    background-position: -4381px 0;
+  }
+}
+
+@keyframes run {
+  100% {
+    background-position: -2767px 0;
+  }
+}
+
+@keyframes jump {
+  100% {
+    background-position: -2306px 0;
+  }
+}
+
+@keyframes fall {
+  100% {
+    background-position: -2306px 0;
+  }
+}
+
+@keyframes ko {
+  100% {
+    background-position: -6917px 0;
+  }
+}
+
+@keyframes dizzy {
+  100% {
+    background-position: -4609px 0;
+  }
+}
+
+@keyframes hit {
+  100% {
+    background-position: -2306px 0;
+  }
+}
+
+@keyframes attack1 {
+  100% {
+    background-position: -3459px 0;
+  }
+}
+
+@keyframes attack2 {
+  100% {
+    background-position: -3459px 0;
+  }
+}
+
+@keyframes attack3 {
+  100% {
+    background-position: -4609px 0;
+  }
 }
