@@ -27,6 +27,10 @@ let velocityY = 0;
 const gravity = 0.5;
 const speed = 4;
 const jumpStrength = -11;
+let doubleJump = 0
+let jumpPressed = false
+let canJump = true;
+let isPlayerGrounded = false
 
 // Player state
 const keysPressed = {};
@@ -205,6 +209,7 @@ function updateGame(deltaTime) {
                 projectedY = platformBounds.top - 32;
                 velocityY = 0;
                 onGround = true;
+                doubleJump = 0; 
             }
         }
     });
@@ -253,10 +258,18 @@ function updateGame(deltaTime) {
     }
 
     // --- Jump Input ---
-    if (keysPressed['ArrowUp'] && onGround) {
+    if (jumpPressed && (onGround || doubleJump < 2)) {
         velocityY = jumpStrength;
-        onGround = false;
+
+        if (onGround) {
+            doubleJump = 1;
+        } else if (doubleJump === 1) {
+            doubleJump = 2;
+        }
+
+        jumpPressed = false;
     }
+
 
     // --- Determine Animation State ---
     previousPlayerState = currentPlayerState;
@@ -302,17 +315,23 @@ function updateGame(deltaTime) {
 
 // Event Listeners
 document.addEventListener('keydown', (event) => {
-    keysPressed[event.key] = true;
+    if (event.key === 'ArrowUp' && canJump) {
+        jumpPressed = true;
+        canJump = false
+    }
 
     // Pause/Unpause with Escape key
     if (event.key === 'Escape') {
         togglePause();
     }
+    keysPressed[event.key] = true
 });
 
 document.addEventListener('keyup', (event) => {
-    keysPressed[event.key] = false;
-});
+    if (event.key === 'ArrowUp') {
+        canJump = true;
+    }
+    keysPressed[event.key] = false});
 
 // Add event listeners for pause menu buttons
 document.addEventListener('DOMContentLoaded', () => {
