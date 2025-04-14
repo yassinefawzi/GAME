@@ -13,10 +13,24 @@ let frameCount = 0;
 let lastTime = 0;
 let deltaTime = 0;
 let fps = 0;
+let fpsUpdateTime = 0;
 
-// Game dimensions
+
+
+// Game dimensions 
 let containerH = gameContainer.offsetHeight;
 let containerW = gameContainer.offsetWidth;
+
+// game music
+const mainAudio = new Audio("/music/main.mp3")
+const jumpAudio = new Audio("/music/jump.mp3")
+const coinAudio = new Audio("/music/coin.mp3")
+const new_stageAudio = new Audio("/music/new_stage.ogg")
+
+mainAudio.loop = true
+document.addEventListener('keydown', (event) => {
+    mainAudio.play()
+}, {once: true})
 
 // Player physics
 let playerX = 50;
@@ -92,9 +106,11 @@ function togglePause() {
     paused = !paused;
     if (paused) {
         pauseMenu.style.display = 'flex';
+        mainAudio.pause()
     } else {
         pauseMenu.style.display = 'none';
         lastTime = performance.now(); // Reset timing when resuming
+        mainAudio.play()
     }
 }
 
@@ -119,6 +135,10 @@ function restartGame() {
 
     // Reset timing
     lastTime = performance.now();
+    // play audio
+    document.addEventListener('keydown', (event) => {
+        mainAudio.play()
+    }, {once: true})
 }
 
 function updateScoreboard() {
@@ -135,20 +155,24 @@ function updateScoreboard() {
     scoreDisplay.innerHTML = `Time: ${timeDisplay} | Score: ${score} | Lives: ${lives}`;
 }
 
+let fpsDisplay = document.getElementById("FPS")
+
+
 // Main game loop
 function gameLoop(timestamp) {
-    // Calculate delta time for consistent animation
+    // Calculate delta time
     if (!lastTime) lastTime = timestamp;
     deltaTime = timestamp - lastTime;
     lastTime = timestamp;
 
     // FPS calculation
-    frameCount++;
-    if (timestamp > lastTime + 1000) {
-        fps = Math.round((frameCount * 1000) / (timestamp - lastTime));
+    if (timestamp - fpsUpdateTime >= 1000) {
+        fps = Math.round(frameCount) - 1;
         frameCount = 0;
-        lastTime = timestamp;
+        fpsUpdateTime = timestamp
+        fpsDisplay.textContent = `FPS: ${fps}`;
     }
+    frameCount++;
 
     if (!paused && gameRunning) {
         // Process game logic
@@ -163,7 +187,7 @@ function gameLoop(timestamp) {
 }
 
 function updateGame(deltaTime) {
-    // --- Horizontal Movement Input & Direction ---
+    // Horizontal Movement Input & Direction
     let isMovingHorizontally = false;
     if (keysPressed['ArrowLeft']) {
         playerX -= speed;
@@ -176,13 +200,13 @@ function updateGame(deltaTime) {
         isMovingHorizontally = true;
     }
 
-    // --- Apply Gravity ---
+    // Apply Gravity
     velocityY += gravity;
 
-    // --- Calculate Potential Next Position ---
+    // Calculate Potential Next Position
     let projectedY = playerY + velocityY;
 
-    // --- Collision Detection & Resolution ---
+    // Collision Detection & Resolution
     onGround = false;
     let hitCeiling = false;
 
@@ -239,7 +263,7 @@ function updateGame(deltaTime) {
         }
     });
 
-    // --- Container Boundary Checks ---
+    // Container Boundary Checks
     if (playerY >= containerH - 32) {
         playerY = containerH - 32;
         if (velocityY > 0) { velocityY = 0; }
@@ -257,9 +281,10 @@ function updateGame(deltaTime) {
         playerX = containerW - 32;
     }
 
-    // --- Jump Input ---
+    // Jump Input
     if (jumpPressed && (onGround || doubleJump < 2)) {
         velocityY = jumpStrength;
+        jumpAudio.play()
 
         if (onGround) {
             doubleJump = 1;
@@ -271,7 +296,7 @@ function updateGame(deltaTime) {
     }
 
 
-    // --- Determine Animation State ---
+    // Determine Animation State
     previousPlayerState = currentPlayerState;
 
     if (onGround) {
@@ -288,7 +313,7 @@ function updateGame(deltaTime) {
         }
     }
 
-    // --- Update DOM Element ---
+    // Update DOM Element
     // 1. Update Classes for Animation
     if (previousPlayerState !== currentPlayerState) {
         player.classList.remove(previousPlayerState);
@@ -308,7 +333,7 @@ function updateGame(deltaTime) {
 
     player.style.transform = `translate(${playerX + spriteOffsetX}px, ${playerY + spriteOffsetY}px) scaleX(${scaleX})`;
 
-    // --- Update Previous State for Next Frame ---
+    // Update Previous State for Next Frame
     prevX = playerX;
     prevY = playerY;
 }
@@ -316,7 +341,9 @@ function updateGame(deltaTime) {
 // Event Listeners
 document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowUp' && canJump) {
-        jumpPressed = true;
+        if (onGround || doubleJump < 2) {
+            jumpPressed = true;
+        }
         canJump = false
     }
 

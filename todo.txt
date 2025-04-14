@@ -6,11 +6,11 @@
 [almost] make animated hero and enemies and map with spreadsheets 
 [] add the map and make it scroll left and right  
 
-
 todo later styling characters and animations, perfecting sizes and hitboxes for player and enemies 
 //stairs, castle, flag, level ending 
 [x] double jump
-
+[x] fps added
+[x] music and sound effect added
 
 bug fix todo
-//fix playear blink when jump (avatar too big for it's container)
+[x] fall bug
