@@ -112,67 +112,67 @@ body {
 /* Player Animation States */
 /* Using your original sprite sheet metrics */
 .player.idle1 {
-  background-image: url('idle1.png');
+  background-image: url('/images/idle1.png');
   background-size: 5072px 154px;
   animation: idle1 1s steps(21) infinite;
 }
 
 .player.idle2 {
-  background-image: url('idle2.png');
+  background-image: url('/images/idle2.png');
   background-size: 4611px 154px;
   animation: idle2 2s steps(19) infinite;
 }
 
 .player.run {
-  background-image: url('run.png');
+  background-image: url('/images/run.png');
   background-size: 2997px 154px;
   animation: run 0.8s steps(12) infinite;
 }
 
 .player.jump {
-  background-image: url('jump.png');
+  background-image: url('/images/jump.png');
   background-size: 2536px 154px;
   animation: jump 0.5s steps(10) forwards;
 }
 
 .player.fall {
-  background-image: url('fall.png');
+  background-image: url('/images/fall.png');
   background-size: 2536px 154px;
   animation: fall 0.5s steps(10) forwards;
 }
 
 .player.ko {
-  background-image: url('ko.png');
+  background-image: url('/images/ko.png');
   background-size: 7147px 154px;
   animation: ko 1s steps(30) infinite;
 }
 
 .player.dizzy {
-  background-image: url('dizzy.png');
+  background-image: url('/images/dizzy.png');
   background-size: 4839px 154px;
   animation: dizzy 1s steps(20) infinite;
 }
 
 .player.hit {
-  background-image: url('hit.png');
+  background-image: url('/images/hit.png');
   background-size: 2536px 154px;
   animation: hit 1s steps(10) infinite;
 }
 
 .player.attack1 {
-  background-image: url('attack1.png');
+  background-image: url('/images/attack1.png');
   background-size: 3689px 154px;
   animation: attack1 1s steps(15) infinite;
 }
 
 .player.attack2 {
-  background-image: url('attack2.png');
+  background-image: url('/images/attack2.png');
   background-size: 3689px 154px;
   animation: attack2 1s steps(15) infinite;
 }
 
 .player.attack3 {
-  background-image: url('attack3.png');
+  background-image: url('/images/attack3.png');
   background-size: 4839px 154px;
   animation: attack3 1s steps(20) infinite;
 }
